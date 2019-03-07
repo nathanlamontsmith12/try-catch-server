@@ -73,7 +73,7 @@ class UserAPIController < ApplicationController
 				success: true,
 				code: 201,
 				done: true,
-				message: "User #{user.username} created",
+				message: "User #{user.username} logged in",
 				login: true,
 				username: user.username,
 				userId: user.id,
