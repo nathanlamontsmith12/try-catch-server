@@ -54,10 +54,6 @@ class ApplicationController < Sinatra::Base
 		200
 	end
 
-	# get '/home' do
-	# 	"what about now"
-	# end
-
 	get '/' do 
 		erb :home
 	end
