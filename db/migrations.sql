@@ -4,15 +4,36 @@ CREATE DATABASE try_catch_app_db;
 \c try_catch_app_db
 
 CREATE TABLE users(
-  id SERIAL PRIMARY KEY,
-  username VARCHAR(128),
-  email TEXT,
-  bio TEXT,
-  password_digest VARCHAR(60),
-  reg_time BIGINT,
-  is_admin BOOLEAN NOT NULL DEFAULT FALSE 
+	id SERIAL PRIMARY KEY,
+	username VARCHAR(128),
+	email TEXT,
+	bio TEXT,
+	password_digest VARCHAR(60),
+	reg_time BIGINT,
+	is_admin BOOLEAN NOT NULL DEFAULT FALSE 
 );
 
+CREATE TABLE errors(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255),
+	description TEXT,
+	owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE 
+);
+
+
+CREATE TABLE notes(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255),
+	content TEXT, 
+	error_id INTEGER REFERENCES errors(id) ON DELETE CASCADE 
+);
+
+
+CREATE TABLE tags(
+	id SERIAL PRIMARY KEY,
+	content VARCHAR(255),
+	error_id INTEGER REFERENCES errors(id) ON DELETE CASCADE
+);
 
 
   -- activeStorage:  ????? 

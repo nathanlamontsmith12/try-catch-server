@@ -1,12 +1,17 @@
 require 'sinatra/base'
 
+
 # require controllers 
 require './controllers/ApplicationController'
 require './controllers/UserController'
 require './controllers/UserAPIController'
 
+
 # models
 require './models/UserModel'
+require './models/ErrorModel'
+require './models/NoteModel'
+require './models/TagModel'
 
 
 # specify routes 
