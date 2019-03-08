@@ -11,6 +11,7 @@ class IssueAPIController < ApplicationController
   end
 
 
+# ============== Issues on User: ==============
 # create issue: 
   	post '/' do 
 
@@ -150,33 +151,277 @@ class IssueAPIController < ApplicationController
 
 
 
-# NOTES on issue: 
-  	# post '/note/:id' do 
 
-  	# end
+# ============== NOTES on issue: ==============
+
+    # find all notes associated with one issue: 
+
+    get '/note/:id' do 
+
+      puts "get all notes on error w/ id #{params[:id]}"
+
+      found_notes = Notes.where(issue_id: params[:id])
+      
+      if found_notes.length > 0   
+
+        response = {
+          success: true, 
+          code: 201,
+          done: true, 
+          message: "Found notes",
+          found_notes: found_notes
+        }
+        
+        response.to_json
+ 
+      else 
+
+        response = {
+          success: true,
+          code: 201, 
+          done: false,
+          message: "No notes found for issue with issue_id #{params[:id]}",
+          found_notes: []
+        }
+
+        response.to_json
+
+      end
+    end
 
 
-  	# delete '/note/:id' do 
+# post a note to an issue 
+  	post '/note/:id' do 
 
-  	# end
+      puts "add note to issue with id #{params[:id]}"
+
+      target_issue = Issue.find_by id: params[:id]
+
+      if not target_issue 
+
+        response = {
+          success: true, 
+          code: 201,
+          done: false, 
+          message: "No issue found with id #{params[:id]}"
+        }
+
+        response.to_json 
+
+      else 
+
+        new_note = Note.new 
+        new_note.name = @payload[:name]
+        new_note.content = @payload[:content]
+        new_note.issue_id = @payload[:issue_id]
+
+        new_note.save 
+
+        response = {
+          success: true, 
+          code: 201,
+          done: true, 
+          message: "created new note on issue with id #{params[:id]}",
+          new_note: new_note 
+        }
+
+        response.to_json 
+
+      end
+
+  	end
 
 
-  	# patch '/note/:id' do 
+# delete a note from an issue 
+  	delete '/note/:id' do 
 
-  	# end
+      puts "delete note with id #{params[:id]}"
+
+      target_note = Note.find_by id: params[:id]
+
+      if not target_note 
+
+        response = {
+          success: true, 
+          code: 201,
+          done: false, 
+          message: "No note found with id #{params[:id]}"
+        }
+
+        response.to_json 
+
+      else 
+
+        deleted_note = target_note
+
+        target_note.destroy 
+
+        response = {
+          success: true, 
+          code: 201,
+          done: true, 
+          message: "deleted note with id #{params[:id]}",
+          deleted_note: deleted_note 
+        }
+
+        response.to_json 
+
+      end      
+
+  	end
+
+
+# update a note on an issue 
+  	patch '/note/:id' do 
+
+      puts "update note with id #{params[:id]}"
+
+      target_note = Note.find_by id: params[:id]
+
+      if not target_note 
+
+        response = {
+          success: true, 
+          code: 201,
+          done: false, 
+          message: "No note found with id #{params[:id]}"
+        }
+
+        response.to_json 
+
+      else 
+
+        target_note.name = @payload[:name]
+        target_note.content = @payload[:content]
+
+        target_note.save 
+
+        response = {
+          success: true, 
+          code: 201,
+          done: true, 
+          message: "updated note with id #{params[:id]}",
+          new_note: target_note 
+        }
+
+        response.to_json 
+
+      end    
+
+  	end
 
 
 
-# TAGS on issue: 
-  	# post '/tag/:id' do 
+
+# ============== TAGS on issue: ==============
+
+    # find all tags associated with one issue: 
+    get '/tag/:id' do 
+
+      found_tags = Tags.where(issue_id: params[:id])
+      
+      if found_tags.length > 0   
+
+        response = {
+          success: true, 
+          code: 201,
+          done: true, 
+          message: "Found tags",
+          found_tags: found_tags
+        }
+        
+        response.to_json
+ 
+      else 
+
+        response = {
+          success: true,
+          code: 201, 
+          done: false,
+          message: "No tags found for issue with issue_id #{params[:id]}",
+          found_tags: []
+        }
+
+        response.to_json
+
+      end
+
+    end
 
 
-  	# end
+    # create new tag on issue w/ id == params[:id]
+  	post '/tag/:id' do 
+
+      target_issue = Issue.find_by id: params[:id]
+
+      if not target_issue 
+
+        response = {
+          success: true, 
+          code: 201,
+          done: false, 
+          message: "No issue found with id #{params[:id]}"
+        }
+
+        response.to_json 
+
+      else 
+
+        new_tag = Tag.new 
+        new_tag.content = @payload[:content]
+        new_tag.issue_id = @payload[:issue_id]
+
+        new_tag.save 
+
+        response = {
+          success: true, 
+          code: 201,
+          done: true, 
+          message: "created new tag on issue with issue_id #{params[:id]}",
+          new_tag: new_tag 
+        }
+
+        response.to_json 
+
+      end
+
+  	end
 
 
-  	# delete '/tag/:id' do 
+    # delete tag with id params[:id]
+  	delete '/tag/:id' do 
 
+      target_tag = Tag.find_by id: params[:id]
 
-  	# end
+      if not target_tag 
+
+        response = {
+          success: true, 
+          code: 201,
+          done: false, 
+          message: "No tag found with id #{params[:id]}"
+        }
+
+        response.to_json 
+
+      else 
+
+        deleted_tag = target_tag
+
+        target_tag.destroy 
+
+        response = {
+          success: true, 
+          code: 201,
+          done: true, 
+          message: "deleted tag with id #{params[:id]}",
+          deleted_tag: deleted_tag
+        }
+
+        response.to_json 
+
+      end   
+
+  	end
 
 end
