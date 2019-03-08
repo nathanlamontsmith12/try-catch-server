@@ -35,6 +35,7 @@ class UserAPIController < ApplicationController
 				success: true,
 				code: 201,
 				done: true,
+				login: true,
 				message: "User #{user.username} created",
 				username: user.username,
 				userId: user.id,
@@ -48,6 +49,7 @@ class UserAPIController < ApplicationController
 				success: true,
 				code: 200,
 				done: false,
+				login: false,
 				message: "Username taken"
 			}
 
