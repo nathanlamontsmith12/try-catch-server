@@ -13,7 +13,7 @@ CREATE TABLE users(
 	is_admin BOOLEAN NOT NULL DEFAULT FALSE 
 );
 
-CREATE TABLE errors(
+CREATE TABLE issues(
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255),
 	description TEXT,
@@ -25,14 +25,14 @@ CREATE TABLE notes(
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255),
 	content TEXT, 
-	error_id INTEGER REFERENCES errors(id) ON DELETE CASCADE 
+	error_id INTEGER REFERENCES issues(id) ON DELETE CASCADE 
 );
 
 
 CREATE TABLE tags(
 	id SERIAL PRIMARY KEY,
 	content VARCHAR(255),
-	error_id INTEGER REFERENCES errors(id) ON DELETE CASCADE
+	error_id INTEGER REFERENCES issues(id) ON DELETE CASCADE
 );
 
 

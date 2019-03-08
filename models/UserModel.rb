@@ -1,4 +1,4 @@
 class User < ActiveRecord::Base
-	has_many :errors 
+	has_many :issues 
 	has_secure_password
 end

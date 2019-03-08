@@ -119,4 +119,11 @@ class UserAPIController < ApplicationController
 
 	end
 
+
+# get all info about a user: 
+# (gotta come last bc of   get '/logout'   route!)
+	get '/:id' do 
+
+	end
+
 end

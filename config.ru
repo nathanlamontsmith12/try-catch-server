@@ -5,11 +5,12 @@ require 'sinatra/base'
 require './controllers/ApplicationController'
 require './controllers/UserController'
 require './controllers/UserAPIController'
+require './controllers/IssueApiController'
 
 
 # models
 require './models/UserModel'
-require './models/ErrorModel'
+require './models/IssueModel'
 require './models/NoteModel'
 require './models/TagModel'
 
@@ -25,4 +26,8 @@ end
 
 map '/api/v1/user' do 
 	run UserAPIController 
+end
+
+map '/api/v1/issue' do 
+	run IssueAPIController 
 end
