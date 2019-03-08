@@ -55,6 +55,7 @@ class ApplicationController < Sinatra::Base
 	end
 
 	get '/' do 
+		@session = session 
 		erb :home
 	end
 

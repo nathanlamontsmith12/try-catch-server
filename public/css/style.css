@@ -1,4 +1,62 @@
 body {
-	background: lightyellow;
+	background: azure;
 }
 
+header {
+	margin: 40px 20px;
+	height: 15vh;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+h1 {
+	color: crimson;
+	font-size: 48px;
+}
+
+nav {
+	display: flex;
+
+}
+
+a {
+	text-decoration: none;
+	color: gray;
+	opacity: 0.7;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: black;
+	opacity: 1;
+}
+
+span {
+	color: gray;
+}
+
+main {
+	margin: 0;
+	background: rgb(235, 40, 80);
+	height: 80vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+section {
+	opacity: 1;
+	display: flex;
+	background: rgb(255, 255, 255);
+	align-items: center;
+	justify-content: center;
+	height: 90%;
+	width: 90%;
+}
+
+section div {
+	height: 80%;
+	width: 80%;
+	opacity: 1;
+}

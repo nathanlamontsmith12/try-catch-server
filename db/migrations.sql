@@ -11,9 +11,11 @@ CREATE TABLE users(
   password_digest VARCHAR(60),
   reg_time BIGINT,
   is_admin BOOLEAN NOT NULL DEFAULT FALSE 
-  -- activeStorage:  ????? 
-  -- has_one_attached :avatar_image ??? 
 );
 
+
+
+  -- activeStorage:  ????? 
+  -- has_one_attached :avatar_image ??? 
 -- OTHER MODELS: 
 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<title>Try / Catch Admin</title>
+</head>
+<body>
+	<header>
+		<h1>Try <span>{</span> <br /> <span>}</span> Catch </h1>
+		<% if @session[:loggedIn] and @session[:is_admin] %>
+			<a href=""> Log out </a>
+		<% else %>
+			<a href=""> Admin </a>
+		<% end %> 
+	</header>
+
+	<% if @session[:loggedIn] and @session[:is_admin] %>
+		<div class="controlPanel">
+			<h2> Admin Control Panel </h2>
+			<nav>
+				<a href=""> Link 1 </a>
+				<a href=""> Link 2 </a>
+				<a href=""> Link 3 </a>								
+			</nav>
+		</div>
+	<% end %>
+
+	<main>
+		<section>
+			<!-- yielded to: should be wrapped in a div! -->
+			<%= yield %>
+		</section>
+	</main>
+</body>
+</html>
