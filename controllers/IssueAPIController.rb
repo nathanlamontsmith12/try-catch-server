@@ -10,17 +10,17 @@ class IssueAPIController < ApplicationController
 		end
   end
 
-
 # ============== Issues on User: ==============
 # create issue: 
   	post '/' do 
 
   		puts "create issue route hit"
 
-  		issue = Issue.new 
-  		issue.name = @payload[:name]
-  		issue.description = @payload[:description]
-  		issue.owner_id = @payload[:user_id]
+  		issue = Issue.new(:name => @payload[:name], :description => @payload[:description], :owner_id => @payload[:user_id]) 
+
+  		# issue.name = @payload["name"]
+  		# issue.description = @payload["description"]
+  		# issue.owner_id = @payload["user_id"]
 
   		issue.save 
 
