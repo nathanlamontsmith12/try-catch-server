@@ -160,7 +160,7 @@ class IssueAPIController < ApplicationController
 
       puts "get all notes on error w/ id #{params[:id]}"
 
-      found_notes = Notes.where(issue_id: params[:id])
+      found_notes = Note.where(issue_id: params[:id])
       
       if found_notes.length > 0   
 
@@ -191,11 +191,11 @@ class IssueAPIController < ApplicationController
 
 
 # post a note to an issue 
-  	post '/note/:id' do 
+  	post '/note' do 
 
-      puts "add note to issue with id #{params[:id]}"
+      puts "add note to issue with id #{@payload[:issue_id]}"
 
-      target_issue = Issue.find_by id: params[:id]
+      target_issue = Issue.find_by id: @payload[:issue_id]
 
       if not target_issue 
 
@@ -203,7 +203,7 @@ class IssueAPIController < ApplicationController
           success: true, 
           code: 201,
           done: false, 
-          message: "No issue found with id #{params[:id]}"
+          message: "No issue found with id #{@payload[:issue_id]}"
         }
 
         response.to_json 
@@ -221,7 +221,7 @@ class IssueAPIController < ApplicationController
           success: true, 
           code: 201,
           done: true, 
-          message: "created new note on issue with id #{params[:id]}",
+          message: "created new note on issue with id #{@payload[:id]}",
           new_note: new_note 
         }
 
@@ -318,7 +318,7 @@ class IssueAPIController < ApplicationController
     # find all tags associated with one issue: 
     get '/tag/:id' do 
 
-      found_tags = Tags.where(issue_id: params[:id])
+      found_tags = Tag.where(issue_id: params[:id])
       
       if found_tags.length > 0   
 
@@ -350,9 +350,9 @@ class IssueAPIController < ApplicationController
 
 
     # create new tag on issue w/ id == params[:id]
-  	post '/tag/:id' do 
+  	post '/tag' do 
 
-      target_issue = Issue.find_by id: params[:id]
+      target_issue = Issue.find_by id: @payload[:issue_id]
 
       if not target_issue 
 
@@ -360,7 +360,7 @@ class IssueAPIController < ApplicationController
           success: true, 
           code: 201,
           done: false, 
-          message: "No issue found with id #{params[:id]}"
+          message: "No issue found with id #{@payload[:issue_id]}"
         }
 
         response.to_json 
@@ -377,7 +377,7 @@ class IssueAPIController < ApplicationController
           success: true, 
           code: 201,
           done: true, 
-          message: "created new tag on issue with issue_id #{params[:id]}",
+          message: "created new tag on issue with issue_id #{@payload[:issue_id]}",
           new_tag: new_tag 
         }
 

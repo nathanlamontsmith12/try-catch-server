@@ -1,3 +1,3 @@
 class Tag < ActiveRecord::Base
-	belongs_to :error
+	belongs_to :issue
 end
