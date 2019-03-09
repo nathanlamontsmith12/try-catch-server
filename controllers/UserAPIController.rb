@@ -1,7 +1,7 @@
 class UserAPIController < ApplicationController 
 
 	before do
-	    if request.post?
+	    if request.post? or request.patch? or request.put? 
 			payload_body = request.body.read
 			@payload = JSON.parse(payload_body).symbolize_keys
 			puts "---------> Here's our payload: "
@@ -73,7 +73,7 @@ class UserAPIController < ApplicationController
 
 			response = {
 				success: true,
-				code: 201,
+				code: 200,
 				done: true,
 				message: "User #{user.username} logged in",
 				login: true,
@@ -120,10 +120,117 @@ class UserAPIController < ApplicationController
 	end
 
 
-# get all info about a user: 
-# (gotta come last bc of   get '/logout'   route!)
+# user profile CRUD: 
+	patch '/profile' do 
+
+		current_user = User.find_by id: @payload[:userId]
+
+		if current_user 
+
+			current_user.email = @payload[:email]
+			current_user.bio = @payload[:bio]
+
+			current_user.save 
+
+			response = {
+				success: true,
+				code: 200,
+				done: true,
+				message: "Updated profile of user with userId #{@payload[:id]}"
+			}
+
+			response.to_json 
+
+		else 
+
+			response = {
+				success: true,
+				code: 200,
+				done: false,
+				message: "Could not find user with id #{@payload[:id]}. No profile updated."
+			}
+
+			response.to_json 
+
+		end
+
+	end	
+
+
+# user CRUD -- change password: 
+	patch '/password' do 
+
+		current_user = User.find_by id: @payload[:userId]
+
+		current_pw = @payload[:oldPW]
+		new_pw = @payload[:newPW]
+
+		if current_user and user.authenticate(current_pw)
+
+			current_user.password = new_pw 
+			current_user.save 
+			
+			response = {
+				success: true,
+				code: 200,
+				done: true,
+				message: "Updated password for user with userId #{@payload[:userId]}"
+			}
+
+			response.to_json 
+
+		else 
+
+			response = { 
+				success: true,
+				code: 200,
+				done: false,
+				message: "FAILED to update password"
+			}
+
+			response.to_json 
+
+		end
+	end
+
+# get user info and issues associated with user, by user_id: 
 	get '/:id' do 
 
+		# find all user data 
+		user = User.find_by id: params[:id] 
+
+		if not user 
+
+			response = {
+				success: true,
+				code: 200,
+				done: false,
+				message: "Could not find user with id #{params[:id]}."
+			}
+
+			response.to_json 
+
+		else 
+
+			issues = []
+
+			found_issues = Issue.where(owner_id: params[:id]) 
+
+			if found_issues and found_issues.length > 0 
+				issues = found_issues 
+			end 
+
+			response = {
+				success: true,
+				code: 200,
+				done: true,
+				message: "Found user with id #{params[:id]}"
+				user: user,
+				issues: issues 
+			}
+
+			response.to_json
+		end
 	end
 
 end

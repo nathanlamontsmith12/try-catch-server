@@ -38,38 +38,91 @@ class IssueAPIController < ApplicationController
 
 
 # find and return all issues associated with one user: 
-  	get '/:id' do 
+  	# get '/:id' do 
 
-  		puts "find and return issues route hit"
+  	# 	puts "find and return issues route hit"
 
-  		found_issues = Issue.where(owner_id: params[:id])
+  	# 	found_issues = Issue.where(owner_id: params[:id])
 
-  		if found_issues.length > 0   
+  	# 	if found_issues.length > 0   
 
-  			response = {
-  				success: true, 
-  				code: 201,
-  				done: true, 
-  				message: "Found issues",
-  				found_issues: found_issues
-  			}
+  	# 		response = {
+  	# 			success: true, 
+  	# 			code: 200,
+  	# 			done: true, 
+  	# 			message: "Found issues",
+  	# 			found_issues: found_issues
+  	# 		}
         
-        response.to_json
+   #      response.to_json
  
-  		else 
+  	# 	else 
 
-  			response = {
-  				success: true,
-  				code: 201, 
-  				done: false,
-  				message: "No issues found for user with user_id #{params[:id]}",
-          found_issues: []
-  			}
+  	# 		response = {
+  	# 			success: true,
+  	# 			code: 200, 
+  	# 			done: false,
+  	# 			message: "No issues found for user with user_id #{params[:id]}",
+   #        found_issues: []
+  	# 		}
 
-  			response.to_json
+  	# 		response.to_json
 
-  		end
-  	end
+  	# 	end
+  	# end
+# THIS ROUTE MOVED TO UserAPIController.rb ... instead: 
+
+
+# find and return all notes and tags associated with one issue (by id): 
+    get '/:id' do 
+
+      found_issue = Issue.find_by id: params[:id]
+
+      if not found_issue 
+
+        response = {
+          success: true,
+          code: 200,
+          done: false,
+          message: "Found no issue with id #{params[:id]}"
+        }
+
+        response.to_json 
+
+      else 
+
+        notes = []
+        tags = []
+
+        found_tags = Tag.where(issue_id: params[:id])
+        found_notes = Note.where(issue_id: params[:id])
+
+        if found_tags and found_tags.length > 0 
+          tags = found_tags
+        end 
+
+
+        if found_notes and found_notes.length > 0 
+          notes = found_notes
+        end
+
+        response = {
+          success: true,
+          code: 200, 
+          done: true, 
+          message: "Found issue",
+          issue: found_issue, 
+          notes: notes,
+          tags: tags
+        }
+
+        response.to_json 
+      
+      end
+
+    end
+
+
 
 # update one issue: 
   	patch '/:id' do 
@@ -98,7 +151,7 @@ class IssueAPIController < ApplicationController
  
         response = {
           success: true,
-          code: 201,
+          code: 200,
           done: true,
           message: "Updated issue with id #{params[:id]}",
           updated_issue: found_issue
@@ -137,7 +190,7 @@ class IssueAPIController < ApplicationController
  
         response = {
           success: true,
-          code: 201,
+          code: 200,
           done: true,
           message: "Deleted issue with id #{params[:id]}",
           deleted: deleted_issue
@@ -166,7 +219,7 @@ class IssueAPIController < ApplicationController
 
         response = {
           success: true, 
-          code: 201,
+          code: 200,
           done: true, 
           message: "Found notes",
           found_notes: found_notes
@@ -178,7 +231,7 @@ class IssueAPIController < ApplicationController
 
         response = {
           success: true,
-          code: 201, 
+          code: 200, 
           done: false,
           message: "No notes found for issue with issue_id #{params[:id]}",
           found_notes: []
@@ -201,7 +254,7 @@ class IssueAPIController < ApplicationController
 
         response = {
           success: true, 
-          code: 201,
+          code: 200,
           done: false, 
           message: "No issue found with id #{@payload[:issue_id]}"
         }
@@ -243,7 +296,7 @@ class IssueAPIController < ApplicationController
 
         response = {
           success: true, 
-          code: 201,
+          code: 200,
           done: false, 
           message: "No note found with id #{params[:id]}"
         }
@@ -258,7 +311,7 @@ class IssueAPIController < ApplicationController
 
         response = {
           success: true, 
-          code: 201,
+          code: 200,
           done: true, 
           message: "deleted note with id #{params[:id]}",
           deleted_note: deleted_note 
@@ -282,7 +335,7 @@ class IssueAPIController < ApplicationController
 
         response = {
           success: true, 
-          code: 201,
+          code: 200,
           done: false, 
           message: "No note found with id #{params[:id]}"
         }
@@ -298,7 +351,7 @@ class IssueAPIController < ApplicationController
 
         response = {
           success: true, 
-          code: 201,
+          code: 200,
           done: true, 
           message: "updated note with id #{params[:id]}",
           new_note: target_note 
@@ -324,7 +377,7 @@ class IssueAPIController < ApplicationController
 
         response = {
           success: true, 
-          code: 201,
+          code: 200,
           done: true, 
           message: "Found tags",
           found_tags: found_tags
@@ -336,7 +389,7 @@ class IssueAPIController < ApplicationController
 
         response = {
           success: true,
-          code: 201, 
+          code: 200, 
           done: false,
           message: "No tags found for issue with issue_id #{params[:id]}",
           found_tags: []
@@ -358,7 +411,7 @@ class IssueAPIController < ApplicationController
 
         response = {
           success: true, 
-          code: 201,
+          code: 200,
           done: false, 
           message: "No issue found with id #{@payload[:issue_id]}"
         }
@@ -397,7 +450,7 @@ class IssueAPIController < ApplicationController
 
         response = {
           success: true, 
-          code: 201,
+          code: 200,
           done: false, 
           message: "No tag found with id #{params[:id]}"
         }
@@ -412,7 +465,7 @@ class IssueAPIController < ApplicationController
 
         response = {
           success: true, 
-          code: 201,
+          code: 200,
           done: true, 
           message: "deleted tag with id #{params[:id]}",
           deleted_tag: deleted_tag
