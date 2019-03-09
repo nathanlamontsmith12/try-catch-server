@@ -224,7 +224,7 @@ class UserAPIController < ApplicationController
 				success: true,
 				code: 200,
 				done: true,
-				message: "Found user with id #{params[:id]}"
+				message: "Found user with id #{params[:id]}",
 				user: user,
 				issues: issues 
 			}
