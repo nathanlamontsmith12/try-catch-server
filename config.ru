@@ -5,7 +5,7 @@ require 'sinatra/base'
 require './controllers/ApplicationController'
 require './controllers/UserController'
 require './controllers/UserAPIController'
-require './controllers/IssueApiController'
+require './controllers/IssueAPIController'
 
 
 # models
