@@ -6,6 +6,7 @@ require './controllers/ApplicationController'
 require './controllers/UserController'
 require './controllers/UserAPIController'
 require './controllers/IssueAPIController'
+require './controllers/ProfileAPIController'
 
 
 # models
@@ -30,4 +31,8 @@ end
 
 map '/api/v1/issue' do 
 	run IssueAPIController 
+end
+
+map '/api/v1/profile' do 
+	run ProfileAPIController
 end
