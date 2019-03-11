@@ -1,4 +1,5 @@
 DROP DATABASE IF EXISTS try_catch_app_db;
+
 CREATE DATABASE try_catch_app_db;
 
 \c try_catch_app_db
@@ -38,6 +39,7 @@ CREATE TABLE tags(
 
 CREATE TABLE collaborations(
 	id SERIAL PRIMARY KEY,
+	pending BOOLEAN NOT NULL DEFAULT TRUE,
 	user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, 
 	collaborator_id INTEGER REFERENCES users(id) ON DELETE CASCADE 
 );
@@ -47,11 +49,7 @@ CREATE TABLE shared_issues(
 	id SERIAL PRIMARY KEY,
 	owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
 	issue_id INTEGER REFERENCES issues(id) ON DELETE CASCADE,
-	collaborator_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+	collaborator_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+	collaboration_id INTEGER REFERENCES collaborations(id) ON DELETE CASCADE
 );
-
-
-  -- activeStorage:  ????? 
-  -- has_one_attached :avatar_image ??? 
--- OTHER MODELS: 
 
