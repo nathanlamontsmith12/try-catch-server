@@ -101,6 +101,40 @@ class UserAPIController < ApplicationController
 	end
 
 
+# non-login -- authenticate user's password 
+	post '/check' do 
+
+		puts "check user route hit"
+
+		user = User.find_by id: @payload[:user_id]
+		pw = @payload[:password]
+
+		if user and user.authenticate(pw) 
+
+			response = {
+				success: true,
+				code: 200,
+				done: true,
+				message: "Checks out!"
+			}
+
+			response.to_json
+
+		else 
+
+			response = {
+				success: true,
+				code: 200,
+				done: false,
+				message: "Nope!"
+			}
+
+			response.to_json 
+
+		end
+	end
+
+
 # log out user route 
 	get '/logout' do 
 
@@ -119,79 +153,6 @@ class UserAPIController < ApplicationController
 
 	end
 
-
-# user profile CRUD: 
-	patch '/profile' do 
-
-		current_user = User.find_by id: @payload[:userId]
-
-		if current_user 
-
-			current_user.email = @payload[:email]
-			current_user.bio = @payload[:bio]
-
-			current_user.save 
-
-			response = {
-				success: true,
-				code: 200,
-				done: true,
-				message: "Updated profile of user with userId #{@payload[:id]}"
-			}
-
-			response.to_json 
-
-		else 
-
-			response = {
-				success: true,
-				code: 200,
-				done: false,
-				message: "Could not find user with id #{@payload[:id]}. No profile updated."
-			}
-
-			response.to_json 
-
-		end
-
-	end	
-
-
-# user CRUD -- change password: 
-	patch '/password' do 
-
-		current_user = User.find_by id: @payload[:userId]
-
-		current_pw = @payload[:oldPW]
-		new_pw = @payload[:newPW]
-
-		if current_user and user.authenticate(current_pw)
-
-			current_user.password = new_pw 
-			current_user.save 
-			
-			response = {
-				success: true,
-				code: 200,
-				done: true,
-				message: "Updated password for user with userId #{@payload[:userId]}"
-			}
-
-			response.to_json 
-
-		else 
-
-			response = { 
-				success: true,
-				code: 200,
-				done: false,
-				message: "FAILED to update password"
-			}
-
-			response.to_json 
-
-		end
-	end
 
 # get user info and issues associated with user, by user_id: 
 	get '/:id' do 

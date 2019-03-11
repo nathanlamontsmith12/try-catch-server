@@ -10,29 +10,50 @@ class ProfileAPIController < ApplicationController
 		end
   	end
 
-
   	patch '/:id' do 
 
   		puts "Update User Profile Route Hit"
 
-  		response = {  			
+  		# update profile 
+  		current_user = User.find_by id: @payload[:user_id]
+
+  		pw = @payload[:password]
+  		new_pw = @payload[:newPassword]
+
+		if current_user and pw and current_user.authenticate(pw)
+
+			current_user.email = @payload[:email]
+			current_user.bio = @payload[:bio]
+
+			if @payload[:newPassword] 
+				current_user.password = new_pw 
+			end 
+
+			current_user.save 
+
+			response = {
 				success: true,
 				code: 200,
 				done: true,
-				message: "TEST: Update user profile; nothing done"
+				message: "Updated user account."
 			}
 
-		response.to_json 
+			response.to_json
 
-  	end
+		else 
+
+			response = {
+				success: true,
+				code: 200,
+				done: false,
+				message: "User does not exist, or password incorrect. No profile updated."
+			}
+
+			response.to_json 
+
+		end
+
+	end
+
 
 end
-
-
-# bio: "Hey I am just a random and crazy guy!"
-# email: "ffff@ffff.com"
-# id: 4
-# newPassword: "ffff"
-# password: "asdf"
-# user_id: 4
-# username: "guy"
