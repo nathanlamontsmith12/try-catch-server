@@ -20,7 +20,7 @@ class CollabAPIController < ApplicationController
 
   		# check in case they are already collaborators 
   		found_collab_1 = Collaboration.find_by user_id: @payload[:user_id]
-  		found_collab_2 = Collaboration.find_by collaborator_id @payload[:collaborator_id]
+  		found_collab_2 = Collaboration.find_by collaborator_id: @payload[:collaborator_id]
 
   		if !found_user1 or !found_user2
 
@@ -86,7 +86,7 @@ class CollabAPIController < ApplicationController
 
         response.to_json
 
-      elsif collaboration_to_update.collaborator_id != params[:user_id]
+      elsif collaboration_to_update.collaborator_id != @payload[:user_id]
 
         response = {
           success: true,
@@ -130,24 +130,39 @@ class CollabAPIController < ApplicationController
 
       if owner and collaborator and collaboration and issue 
 
-        shared_issue = Shared_Issue.new
+        if collaboration.pending 
 
-        shared_issue.owner_id = @payload[:owner_id]
-        shared_issue.collaborator_id = @payload[:collaborator_id]
-        shared_issue.collaboration_id = @payload[:collaboration_id]
-        shared_issue.issue_id = @payload[:issue_id]
+          response = {
+            success: true,
+            code: 200,
+            done: false,
+            message: "Collaboration exists, but is pending (not activated)"
+          }
 
-        shared_issue.save 
-        
-        response = {
-          success: true,
-          code: 201,
-          done: true,
-          message: "Created a new shared issue association",
-          shared_issue: shared_issue 
-        }
+          response.to_json
 
-        response.to_json 
+        else 
+
+          shared_issue = Shared_Issue.new
+
+          shared_issue.owner_id = @payload[:owner_id]
+          shared_issue.collaborator_id = @payload[:collaborator_id]
+          shared_issue.collaboration_id = @payload[:collaboration_id]
+          shared_issue.issue_id = @payload[:issue_id]
+
+          shared_issue.save 
+          
+          response = {
+            success: true,
+            code: 201,
+            done: true,
+            message: "Created a new shared issue association",
+            shared_issue: shared_issue 
+          }
+
+          response.to_json 
+
+        end
 
       else 
 
@@ -168,7 +183,7 @@ class CollabAPIController < ApplicationController
   	# remove collaborator AND unshare all files between the two  
   	delete '/:collaboration_id' do 
 
-      collaboration_to_delete = Collaboration.find_by id: params[:collab_id]
+      collaboration_to_delete = Collaboration.find_by id: params[:collaboration_id]
 
       if not collaboration_to_delete
 
