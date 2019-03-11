@@ -36,6 +36,21 @@ CREATE TABLE tags(
 );
 
 
+CREATE TABLE collaborators(
+	id SERIAL PRIMARY KEY,
+	user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, 
+	collaborator_id INTEGER REFERENCES users(id) ON DELETE CASCADE 
+);
+
+
+CREATE TABLE shared_issues(
+	id SERIAL PRIMARY KEY,
+	owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+	issue_id INTEGER REFERENCES issues(id) ON DELETE CASCADE,
+	collaborator_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+);
+
+
   -- activeStorage:  ????? 
   -- has_one_attached :avatar_image ??? 
 -- OTHER MODELS: 

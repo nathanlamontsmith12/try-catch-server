@@ -7,6 +7,7 @@ require './controllers/UserController'
 require './controllers/UserAPIController'
 require './controllers/IssueAPIController'
 require './controllers/ProfileAPIController'
+require './controllers/CollabAPIController'
 
 
 # models
@@ -14,6 +15,7 @@ require './models/UserModel'
 require './models/IssueModel'
 require './models/NoteModel'
 require './models/TagModel'
+require './models/CollaboratorModel'
 
 
 # specify routes 
@@ -36,3 +38,7 @@ end
 map '/api/v1/profile' do 
 	run ProfileAPIController
 end
+
+map '/api/v1/collab' do 
+	run CollabAPIController 
+end 
