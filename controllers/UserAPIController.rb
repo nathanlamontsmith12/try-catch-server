@@ -181,10 +181,10 @@ class UserAPIController < ApplicationController
 				issues = found_issues 
 			end 
 
-			collaborators = []
+			collaborations = []
 
-			found_collaborators = Collaborator.where(user_id: params[:id])
-			found_collaborators2 = Collaborator.where(collaborator_id: params[:id])
+			found_collaborators = Collaboration.where(user_id: params[:id])
+			found_collaborators2 = Collaboration.where(collaborator_id: params[:id])
 
 			if found_collaborators2.length > 0 
 				found_collaborators2.each do |elem| 
@@ -195,7 +195,7 @@ class UserAPIController < ApplicationController
 			end  
 
 			if found_collaborators.length > 0 
-				collaborators = found_collaborators
+				collaborations = found_collaborators
 			end
 
 			shared_issues = [] 
@@ -213,7 +213,7 @@ class UserAPIController < ApplicationController
 				message: "Found user with id #{params[:id]}",
 				user: user,
 				issues: issues,
-				collaborators: collaborators,
+				collaborations: collaborations,
 				shared_issues: shared_issues 
 			}
 

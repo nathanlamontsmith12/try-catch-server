@@ -36,7 +36,7 @@ CREATE TABLE tags(
 );
 
 
-CREATE TABLE collaborators(
+CREATE TABLE collaborations(
 	id SERIAL PRIMARY KEY,
 	user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, 
 	collaborator_id INTEGER REFERENCES users(id) ON DELETE CASCADE 

@@ -15,8 +15,8 @@ require './models/UserModel'
 require './models/IssueModel'
 require './models/NoteModel'
 require './models/TagModel'
-require './models/CollaboratorModel'
-require './models/Shared_Issue'
+require './models/CollaborationModel'
+require './models/Shared_IssueModel'
 
 
 # specify routes 
