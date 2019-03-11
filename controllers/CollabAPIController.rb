@@ -10,6 +10,6 @@ class CollabAPIController < ApplicationController
 		end
   	end
 
-  	
+  	# add collaborator to user 
 
 end

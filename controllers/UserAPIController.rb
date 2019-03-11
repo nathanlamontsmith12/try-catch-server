@@ -154,7 +154,7 @@ class UserAPIController < ApplicationController
 	end
 
 
-# get user info and issues associated with user, by user_id: 
+# get ALL user info (issues, collaborators, and shared_issues associated with user, by user_id): 
 	get '/:id' do 
 
 		# find all user data 
@@ -181,13 +181,40 @@ class UserAPIController < ApplicationController
 				issues = found_issues 
 			end 
 
+			collaborators = []
+
+			found_collaborators = Collaborator.where(user_id: params[:id])
+			found_collaborators2 = Collaborator.where(collaborator_id: params[:id])
+
+			if found_collaborators2.length > 0 
+				found_collaborators2.each do |elem| 
+					if not (found_collaborators.include? elem) 
+						found_collaborators << elem 
+					end 
+				end 
+			end  
+
+			if found_collaborators.length > 0 
+				collaborators = found_collaborators
+			end
+
+			shared_issues = [] 
+
+			found_shared_issues = Shared_Issue.where(collaborator_id: params[:id])
+
+			if found_shared_issues.length > 0 
+				shared_issues = found_shared_issues
+			end
+
 			response = {
 				success: true,
 				code: 200,
 				done: true,
 				message: "Found user with id #{params[:id]}",
 				user: user,
-				issues: issues 
+				issues: issues,
+				collaborators: collaborators,
+				shared_issues: shared_issues 
 			}
 
 			response.to_json
