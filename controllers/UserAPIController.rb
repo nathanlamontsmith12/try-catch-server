@@ -221,4 +221,42 @@ class UserAPIController < ApplicationController
 		end
 	end
 
+	# search users based on a username query 
+	post '/search' do 
+
+		if !@payload[:query] or @payload[:query].length < 1
+
+			response = {
+				success: true,
+				code: 200,
+				done: false,
+				message: "Invalid search query"
+			}
+
+			response.to_json
+
+		else
+
+			exact_match = User.select("username, id").find_by(username: @payload[:query])
+
+			sim_query = "%" + @payload[:query] + "%"
+			similar_matches = User.select("username, id").where("username LIKE ?", sim_query)
+
+
+
+			response = {
+				success: true,
+				code: 200,
+				done: true,
+				message: "Search completed",
+				exact_match: exact_match,
+				similar_matches: similar_matches
+			}
+
+			response.to_json
+
+		end
+
+	end
+
 end
