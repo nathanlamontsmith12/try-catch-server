@@ -6,7 +6,7 @@ CREATE DATABASE try_catch_app_db;
 
 CREATE TABLE users(
 	id SERIAL PRIMARY KEY,
-	username VARCHAR(128),
+	username VARCHAR(127),
 	email TEXT,
 	bio TEXT,
 	password_digest VARCHAR(60),
@@ -42,15 +42,19 @@ CREATE TABLE collaborations(
 	id SERIAL PRIMARY KEY,
 	pending BOOLEAN NOT NULL DEFAULT TRUE,
 	user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, 
-	collaborator_id INTEGER REFERENCES users(id) ON DELETE CASCADE 
+	initiator VARCHAR(127),
+	collaborator_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+	collaborator VARCHAR(127) 
 );
 
 
 CREATE TABLE shared_issues(
 	id SERIAL PRIMARY KEY,
 	owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+	owner_name VARCHAR(127),
 	issue_id INTEGER REFERENCES issues(id) ON DELETE CASCADE,
 	collaborator_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+	collaborator_name VARCHAR(127),
 	collaboration_id INTEGER REFERENCES collaborations(id) ON DELETE CASCADE
 );
 

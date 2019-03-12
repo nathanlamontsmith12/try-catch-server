@@ -50,7 +50,9 @@ class CollabAPIController < ApplicationController
   			collaboration = Collaboration.new 
 
   			collaboration.user_id = @payload[:user_id]
+        collaboration.initiator = found_user1.username 
   			collaboration.collaborator_id = @payload[:collaborator_id]
+        collaboration.collaborator = found_user2.username 
 
   			collaboration.save 
 
@@ -145,10 +147,14 @@ class CollabAPIController < ApplicationController
 
           shared_issue = Shared_Issue.new
 
-          shared_issue.owner_id = @payload[:owner_id]
-          shared_issue.collaborator_id = @payload[:collaborator_id]
           shared_issue.collaboration_id = @payload[:collaboration_id]
           shared_issue.issue_id = @payload[:issue_id]
+
+          shared_issue.owner_id = @payload[:owner_id]
+          shared_issue.owner_name = owner.username 
+          
+          shared_issue.collaborator_id = @payload[:collaborator_id]
+          shared_issue.collaborator_name = collaborator.username 
 
           shared_issue.save 
           

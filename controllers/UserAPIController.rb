@@ -183,20 +183,22 @@ class UserAPIController < ApplicationController
 
 			collaborations = []
 
-			found_collaborators = Collaboration.where(user_id: params[:id])
+			found_collaborators1 = Collaboration.where(user_id: params[:id])
 			found_collaborators2 = Collaboration.where(collaborator_id: params[:id])
+
+			if found_collaborators1.length > 0 
+				found_collaborators1.each do |elem| 
+					collaborations.push(elem)
+				end
+			end
 
 			if found_collaborators2.length > 0 
 				found_collaborators2.each do |elem| 
-					if not (found_collaborators.include? elem) 
-						found_collaborators << elem 
+					if not (collaborations.include?(elem)) 
+						collaborations.push(elem) 
 					end 
 				end 
 			end  
-
-			if found_collaborators.length > 0 
-				collaborations = found_collaborators
-			end
 
 			shared_issues = [] 
 
