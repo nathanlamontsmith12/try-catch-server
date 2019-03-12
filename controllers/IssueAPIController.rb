@@ -267,6 +267,7 @@ class IssueAPIController < ApplicationController
         new_note.name = @payload[:name]
         new_note.content = @payload[:content]
         new_note.issue_id = @payload[:issue_id]
+        new_note.owner_id = @payload[:owner_id]
 
         new_note.save 
 

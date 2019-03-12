@@ -26,7 +26,8 @@ CREATE TABLE notes(
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255),
 	content TEXT, 
-	issue_id INTEGER REFERENCES issues(id) ON DELETE CASCADE 
+	issue_id INTEGER REFERENCES issues(id) ON DELETE CASCADE,
+	owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE 
 );
 
 
