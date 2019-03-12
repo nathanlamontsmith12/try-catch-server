@@ -59,7 +59,7 @@ class CollabAPIController < ApplicationController
     			code: 201,
     			done: true,
     			message: "Created a collaboration association between the two users",
-    			collaboration: collaboration 
+    			collaboration: collaboration
     		}
 
 	  		response.to_json
