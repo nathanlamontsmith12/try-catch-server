@@ -249,14 +249,15 @@ class IssueAPIController < ApplicationController
       puts "add note to issue with id #{@payload[:issue_id]}"
 
       target_issue = Issue.find_by id: @payload[:issue_id]
+      owner = User.find_by id: @payload[:owner_id]
 
-      if not target_issue 
+      if not target_issue or not owner 
 
         response = {
           success: true, 
           code: 200,
           done: false, 
-          message: "No issue found with id #{@payload[:issue_id]}"
+          message: "No issue and/or user found"
         }
 
         response.to_json 
@@ -268,6 +269,8 @@ class IssueAPIController < ApplicationController
         new_note.content = @payload[:content]
         new_note.issue_id = @payload[:issue_id]
         new_note.owner_id = @payload[:owner_id]
+
+        new_note.owner_name = owner.username
 
         new_note.save 
 
