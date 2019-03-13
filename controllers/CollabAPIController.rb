@@ -129,8 +129,21 @@ class CollabAPIController < ApplicationController
       collaborator = User.find_by id: @payload[:collaborator_id]
       collaboration = Collaboration.find_by id: @payload[:collaboration_id]
       issue = Issue.find_by id: @payload[:issue_id]
+      
+      extant_shared_issue = Shared_Issue.find_by issue_id: @payload[:issue_id]
 
-      if owner and collaborator and collaboration and issue 
+      if extant_shared_issue and (extant_shared_issue.collaborator_id == @payload[:collaborator_id])
+
+        response = {
+          success: true,
+          code: 200,
+          done: false,
+          message: "This issue has already been shared with #{collaborator.username}"
+        }
+
+        response.to_json 
+
+      elsif owner and collaborator and collaboration and issue
 
         if collaboration.pending 
 
@@ -143,7 +156,7 @@ class CollabAPIController < ApplicationController
 
           response.to_json
 
-        else 
+        else  
 
           shared_issue = Shared_Issue.new
 
@@ -173,6 +186,8 @@ class CollabAPIController < ApplicationController
         end
 
       else 
+
+        message = "Failed to create new shared issue association"
 
         response = {
           success: true,
