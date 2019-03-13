@@ -202,10 +202,21 @@ class UserAPIController < ApplicationController
 
 			shared_issues = [] 
 
-			found_shared_issues = Shared_Issue.where(collaborator_id: params[:id])
+			found_shared_issues1 = Shared_Issue.where(collaborator_id: params[:id])
+			found_shared_issues2 = Shared_Issue.where(owner_id: params[:id])
 
-			if found_shared_issues.length > 0 
-				shared_issues = found_shared_issues
+			if found_shared_issues1.length > 0
+				found_shared_issues1.each do |elem|
+					shared_issues.push(elem)
+				end
+			end
+
+			if found_shared_issues2.length > 0 
+				found_shared_issues2.each do |elem|
+					if not (shared_issues.include?(elem))
+						shared_issues.push(elem)
+					end
+				end
 			end
 
 			response = {
