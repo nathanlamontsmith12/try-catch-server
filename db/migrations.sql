@@ -50,6 +50,7 @@ CREATE TABLE collaborations(
 
 CREATE TABLE shared_issues(
 	id SERIAL PRIMARY KEY,
+	name VARCHAR(255),
 	owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
 	owner_name VARCHAR(127),
 	issue_id INTEGER REFERENCES issues(id) ON DELETE CASCADE,

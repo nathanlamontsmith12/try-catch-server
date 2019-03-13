@@ -156,6 +156,8 @@ class CollabAPIController < ApplicationController
           shared_issue.collaborator_id = @payload[:collaborator_id]
           shared_issue.collaborator_name = collaborator.username 
 
+          shared_issue.name = issue.name 
+
           shared_issue.save 
           
           response = {
