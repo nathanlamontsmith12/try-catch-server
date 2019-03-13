@@ -170,6 +170,7 @@ class CollabAPIController < ApplicationController
           shared_issue.collaborator_name = collaborator.username 
 
           shared_issue.name = issue.name 
+          shared_issue.description = issue.description 
 
           shared_issue.save 
           

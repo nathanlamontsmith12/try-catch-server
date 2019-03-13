@@ -54,6 +54,7 @@ CREATE TABLE shared_issues(
 	name VARCHAR(255),
 	owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
 	owner_name VARCHAR(127),
+	description TEXT, 
 	issue_id INTEGER REFERENCES issues(id) ON DELETE CASCADE,
 	collaborator_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
 	collaborator_name VARCHAR(127),
