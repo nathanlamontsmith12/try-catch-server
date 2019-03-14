@@ -18,9 +18,20 @@ class CollabAPIController < ApplicationController
   		found_user1 = User.find_by id: @payload[:user_id]
   		found_user2 = User.find_by id: @payload[:collaborator_id]
 
+
   		# check in case they are already collaborators 
-  		found_collab_1 = Collaboration.find_by user_id: @payload[:user_id]
-  		found_collab_2 = Collaboration.find_by collaborator_id: @payload[:collaborator_id]
+      already_collab = false 
+  		
+      to_check = Collaboration.where("user_id = ? OR collaborator_id = ?", @payload[:user_id], @payload[:user_id])
+  		
+      puts "collabs to check (total): "
+      pp to_check 
+
+      to_check.each do |collab| 
+        if (collab.user_id == @payload[:collaborator_id]) or (collab.collaborator_id == @payload[:collaborator_id]) 
+          already_collab = true
+        end
+      end
 
   		if !found_user1 or !found_user2
 
@@ -33,7 +44,7 @@ class CollabAPIController < ApplicationController
 
   			response.to_json 
 
-  		elsif found_collab_1 or found_collab_2 
+  		elsif already_collab
 
   			response = {
   				success: true,
